@@ -105,13 +105,25 @@ blue-10: #2E3A92 */
 }
 
 
-
-
-
-
-
-
-
+/* space */
+.APODSection{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.APODSection > p{
+    font-size: 4rem;
+    font-weight: 800;
+    color:#ced0d3;
+    border: 1px solid #E2E8F0;
+    background:rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
 
 .submitButton{
     width: 6vw;
