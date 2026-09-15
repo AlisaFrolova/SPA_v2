@@ -1,6 +1,6 @@
 import createEl from "./tools.js"
 
-export default function AboutView(){
+export default function aboutView(){
     const app = document.querySelector('#app')
 
     //section

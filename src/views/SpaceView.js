@@ -1,6 +1,6 @@
 import createEl from "./tools.js"
 
-export default function SpaceView(){
+export default function spaceView(){
     const app = document.querySelector('#app')
 
     //section

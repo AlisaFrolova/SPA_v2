@@ -1,15 +1,15 @@
-import HomeView from "./views/HomeView.js"
-import SpaceView from "./views/SpaceView.js"
-import NewsView from "./views/NewsView.js"
-import AboutView from "./views/AboutView.js"
-import AuthView from "./views/AuthView.js";
+import homeView from "./views/homeView.js"
+import spaceView from "./views/spaceView.js"
+import newsView from "./views/newsView.js"
+import aboutView from "./views/aboutView.js"
+import authView from "./views/authView.js";
 
 const routes = {
-    "/": HomeView,
-    "/space": SpaceView,
-    "/news": NewsView,
-    "/about": AboutView,
-    "/auth": AuthView
+    "/": homeView,
+    "/space": spaceView,
+    "/news": newsView,
+    "/about": aboutView,
+    "/auth": authView
 };
 
 const appContainer = document.getElementById("app")

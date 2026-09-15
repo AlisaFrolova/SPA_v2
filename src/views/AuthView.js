@@ -1,6 +1,6 @@
 import createEl from "./tools.js"
 
-export default function AuthView(){
+export default function authView(){
     const app = document.querySelector('#app')
     
     //section

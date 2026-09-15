@@ -1,6 +1,6 @@
 import createEl from "./tools.js"
 
-export default function NewsView(){
+export default function homeView(){
     const app = document.querySelector('#app')
 
     //section
