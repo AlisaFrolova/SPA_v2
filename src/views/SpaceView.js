@@ -1,5 +1,6 @@
 import createEl from "./tools.js"
 import getAPOD from "../NasaApi.js"
+import {getAsteroids} from "../NasaApi.js"
 
 export default function spaceView(){
     const app = document.querySelector('#app')
@@ -19,6 +20,12 @@ export default function spaceView(){
     section.append(APODSection)
 
     APODSection.append(createEl("p", "Astronomy Picture of the Day", "textWhite"))
+    
+    let arr = []
+    getAsteroids().then(asteroids => { //ADD SOME VALIDATION BEFORE !
+        arr = asteroids.near_earth_objects["2026-09-09"] //WORKS!!!!!!!!!!!!!!!
+        console.log(arr)
+    })
 
     return section
 }
