@@ -19,7 +19,7 @@ blue-10: #2E3A92 */
     background-color: #0d1117;  
 }
 .header{
-    border-bottom: 1px solid #E2E8F0;
+    border: 1px solid #E2E8F0;
 }
 .logo{
     width: 10vw;
@@ -105,7 +105,10 @@ blue-10: #2E3A92 */
 }
 
 
+
 /* space */
+
+/* APOD */
 .APODSection{
     background-size: cover;
     background-repeat: no-repeat;
@@ -125,6 +128,51 @@ blue-10: #2E3A92 */
     text-align: center;
 }
 
+/* Asteroids */
+.asteroidContainer{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 2vw;
+    width: 100vw;
+    background: #4a5463;
+}
+.asteroidCard{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #2E3A92;
+    background: #0d1117;
+    color:#ced0d3;
+    width: 20vw;
+    height: 38vw;
+    padding: 18px;
+}
+.asteroidCard > p{
+    font-size: 1.4rem;
+}
+.asteroidCard > .accent{
+    font-size: 1.8rem;
+}
+.hazardousAsteroid, .safeAsteroid{
+    font-weight: 700;
+    font-style: italic;
+}
+.hazardousAsteroid{
+    color:#852b1b;
+}
+.safeAsteroid{
+    color:#4a9b36;
+}
+.asteroidImage{
+    width: 15vw;
+    height: 12vw;
+}
+
+/* Auth */
 .submitButton{
     width: 6vw;
     height: 5vw;

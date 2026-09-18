@@ -1,5 +1,5 @@
 import homeView from "./views/homeView.js"
-import spaceView from "./views/spaceView.js"
+import spaceView from "./views/spaceView/spaceView.js"
 import newsView from "./views/newsView.js"
 import aboutView from "./views/aboutView.js"
 import authView from "./views/authView.js"
