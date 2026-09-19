@@ -25,7 +25,7 @@ export default function spaceView(){
     //ASTEROIDS
     section.append(createEl("h2", "Asteroids", "header"))
     section.append(createAsteroidSection())
-    
+
     return section
 }
 

@@ -1,4 +1,4 @@
-import homeView from "./views/homeView.js"
+import homeView from "./views/homeView/homeView.js"
 import spaceView from "./views/spaceView/spaceView.js"
 import newsView from "./views/newsView.js"
 import aboutView from "./views/aboutView.js"
