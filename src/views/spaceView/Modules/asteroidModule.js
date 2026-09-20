@@ -1,18 +1,24 @@
 import { getAsteroids } from "../../../NasaApi.js"
 import createEl from "../../tools.js"
 
+let asteroidsArr = []
+const asteroidSection = createEl("section", "", "asteroidSection")
+const asteroidContainer = createEl("div", "", "asteroidContainer")
+const asteroidImages = {
+    img1: "https://images-assets.nasa.gov/image/PIA23876/PIA23876~orig.jpg",
+    img2: "https://images-assets.nasa.gov/image/PIA15506/PIA15506~orig.jpg",
+    img3: "https://images-assets.nasa.gov/image/PIA02471/PIA02471~orig.jpg"
+}
+
 export default function createAsteroidSection(){
-    const asteroidSection = createEl("section", "", "asteroidSection")
-    const asteroidContainer = createEl("div", "", "asteroidContainer")
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
     getAsteroids().then(asteroids => { //ADD SOME VALIDATION BEFORE !
-        spawnCards(asteroidContainer, asteroids.near_earth_objects["2026-09-09"], "https://images-assets.nasa.gov/image/PIA23876/PIA23876~orig.jpg")
-        spawnCards(asteroidContainer, asteroids.near_earth_objects["2026-09-10"], "https://images-assets.nasa.gov/image/PIA15506/PIA15506~orig.jpg")
-        spawnCards(asteroidContainer, asteroids.near_earth_objects["2026-09-11"], "https://images-assets.nasa.gov/image/PIA02471/PIA02471~orig.jpg")
+        asteroidsArr = structuredClone(asteroids.near_earth_objects)
+        asteroidSection.prepend(createSortMenu(asteroids))
+    
+        spawnCards()
     })
     asteroidSection.append(asteroidContainer)
-
-    asteroidSection.prepend(createSortMenu())
 
     return asteroidSection
 }
@@ -44,17 +50,22 @@ function createAsteroidCard(asteroidName, approachDate, diameter, lunarDistance,
     return card
 }
 
-function spawnCards(container, arr, imgLink){
-    for (const el of arr) {
-        container.append(createAsteroidCard(el.name,
-            el.close_approach_data[0].close_approach_date_full,
-                el.estimated_diameter.meters.estimated_diameter_min,
-                   el.close_approach_data[0].miss_distance.lunar,
-                       el.is_potentially_hazardous_asteroid, imgLink))
+function spawnCards(){
+    let i = 1
+    for (const key in asteroidsArr){
+        const el = asteroidsArr[key]
+        for (const obj of el) {
+            asteroidContainer.append(createAsteroidCard(obj.name,
+            obj.close_approach_data[0].close_approach_date_full,
+                obj.estimated_diameter.meters.estimated_diameter_min,
+                   obj.close_approach_data[0].miss_distance.lunar,
+                       obj.is_potentially_hazardous_asteroid, asteroidImages[`img${i}`]))
+        }
+        i++
     }
 }
 
-function createSortMenu(){
+function createSortMenu(arr){
     const asteroidSortMenu = createEl("div", "", "asteroidSortMenu")
 
     asteroidSortMenu.append(createEl("h2", "Filter Asteroids", "textWhite"))
@@ -66,22 +77,21 @@ function createSortMenu(){
     asteroidSortMenu.append(asteroidSortContainer)
     
     const confirmButton = createEl("button", "Apply", "confirmButton")
-    const hazardousInput = document.querySelector(".asteroidSortMenu")//NW!!! parent is not added to the DOM yet
-    console.log(hazardousInput)
+    const hazardousInput = asteroidSortContainer.children[2].firstElementChild
     confirmButton.addEventListener("click", () => {
-        if(hazardousInput.checked){
-            //NF
+        if(!hazardousInput.checked){
+            const tempArr = structuredClone(arr.near_earth_objects)
+            for (const key in tempArr){
+                tempArr[key] = tempArr[key].filter(obj => {
+                    return !obj.is_potentially_hazardous_asteroid
+                })
+            }
+            asteroidsArr = structuredClone(tempArr)
+        }else{
+            asteroidsArr = structuredClone(arr.near_earth_objects)
         }
-        //NF
-        //examples of filters:
-//         function sortByBrend(brend, arr, input){
-//     if(!input.checked){
-//         arr = arr.filter(el => {
-//             return el.brend !== brend;
-//         })
-//     }
-//     return arr;
-// }
+        asteroidContainer.innerHTML = ""
+        spawnCards()
 
 // function sortByPrice(arr){
 //     arr = arr.filter(el => parseInt(el.prices.slice(0, -1)) >= parseInt(price_input.value))
