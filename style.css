@@ -73,7 +73,7 @@ blue-10: #2E3A92 */
     width: 100%;
     height: 80%;
     text-align: center;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -95,9 +95,6 @@ blue-10: #2E3A92 */
 }
 
 /* text */
-.accent, .textBlack, .textWhite{
-    font-size: 2.2rem;
-}
 .accent{
     color:#2E3A92;
 }
@@ -133,6 +130,14 @@ blue-10: #2E3A92 */
 }
 
 /* Asteroids */
+.asteroidSection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 400px;
+}
 .asteroidContainer{
     display: flex;
     align-items: center;
@@ -148,14 +153,14 @@ blue-10: #2E3A92 */
 .asteroidCard{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1vw;
     align-items: center;
     justify-content: center;
     border: 3px solid #2E3A92;
     background: #0d1117;
     color:#ced0d3;
-    width: 20vw;
-    height: 38vw;
+    width: 25vw;
+    height: 65vh;
     padding: 18px;
 }
 .asteroidCard > p{
@@ -177,6 +182,47 @@ blue-10: #2E3A92 */
 .asteroidImage{
     width: 15vw;
     height: 12vw;
+}
+
+.asteroidSortMenu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 28vw;
+    border: 3px solid #2E3A92;
+    background: #0d1117;
+    font-size: 1.5rem;
+    gap: 20px;
+    padding: 30px;
+}
+.asteroidSortContainer{
+    width: 100%;
+    height: 12vw;
+    display: flex;
+    border: 1px solid #2E3A92;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.sortBlock{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.confirmButton{
+    cursor: pointer;
+    width: 9vw;
+    height: 6vw;
+    border: 3px solid #2E3A92;
+    background-color: #ced0d3;
+    color:#0d1117;
+    font-size: 1.7rem;
+    padding: 5px;
+    font-weight: 800;
 }
 
 /* Auth */
