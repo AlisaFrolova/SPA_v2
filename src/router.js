@@ -3,13 +3,15 @@ import spaceView from "./views/spaceView/spaceView.js"
 import newsView from "./views/newsView.js"
 import aboutView from "./views/aboutView.js"
 import authView from "./views/authView.js"
+import createAsteroidSection from "./views/spaceView/Modules/asteroidModule.js"
 
 const routes = {
     "/": homeView,
     "/space": spaceView,
     "/news": newsView,
     "/about": aboutView,
-    "/auth": authView
+    "/auth": authView,
+    "/space/asteroids": createAsteroidSection
 };
 
 const appContainer = document.getElementById("app")

@@ -97,6 +97,7 @@ blue-10: #2E3A92 */
 /* text */
 .accent{
     color:#2E3A92;
+    font-size: 2.7rem;
 }
 .textBlack{
     color:#0d1117;
@@ -182,6 +183,30 @@ blue-10: #2E3A92 */
 .asteroidImage{
     width: 15vw;
     height: 12vw;
+}
+
+.asteroidPreview{
+    width: 100%;
+    font-size: 2rem;
+    gap: 30px;
+    background-color:#0d1117;
+    border: 3px solid #2E3A92;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+.previewImage{
+    width: 20vw;
+    height: 15vw;
+    border-radius: 20%;
+}
+.link{
+    font-size: 1.8rem;
+    align-self:flex-end;
+    color:#2E3A92;
+    position: absolute;
+    right: 5%;
 }
 
 .asteroidSortMenu{

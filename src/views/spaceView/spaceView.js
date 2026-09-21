@@ -1,6 +1,5 @@
 import createEl from "../tools.js"
 import {getAPOD} from "../../NasaApi.js"
-import createAsteroidSection from "./Modules/asteroidModule.js"
 
 export default function spaceView(){
     const app = document.querySelector('#app')
@@ -23,8 +22,19 @@ export default function spaceView(){
     APODSection.append(createEl("p", "Astronomy Picture of the Day", "textWhite"))
     
     //ASTEROIDS
-    section.append(createEl("h2", "Asteroids", "header"))
-    section.append(createAsteroidSection())
+    const asteroidPreview = createEl("section", "", "asteroidPreview")
+    asteroidPreview.append(createEl("p", "Asteroids", "accent"))
+    asteroidPreview.append(createEl("p", "Search, filter and read about asteroids", "textWhite"))
+
+    const previewImage = createEl("img", "", "previewImage")
+    previewImage.src = "https://images-assets.nasa.gov/image/PIA15789/PIA15789~orig.jpg"
+    asteroidPreview.prepend(previewImage)
+
+    const asteroidLink = createEl("a", "Read more...", "link")
+    asteroidLink.href = "/space/asteroids"
+    asteroidLink.setAttribute("data-link", "")
+    asteroidPreview.append(asteroidLink)
+    section.append(asteroidPreview)
 
     return section
 }

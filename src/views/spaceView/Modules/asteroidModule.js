@@ -11,10 +11,11 @@ const asteroidImages = {
 }
 
 export default function createAsteroidSection(){
+    asteroidSection.append(createEl("h2", "Asteroids", "header")) //add this cool img to background: images-assets.nasa.gov/image/GSFC_20171208_Archive_e000720/GSFC_20171208_Archive_e000720~orig.jpg
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
     getAsteroids().then(asteroids => { //ADD SOME VALIDATION BEFORE !
         asteroidsArr = structuredClone(asteroids.near_earth_objects)
-        asteroidSection.prepend(createSortMenu(asteroids))
+        asteroidSection.firstElementChild.after(createSortMenu(asteroids))
     
         spawnCards()
     })
