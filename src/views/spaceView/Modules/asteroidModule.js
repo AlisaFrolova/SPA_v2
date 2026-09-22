@@ -2,7 +2,6 @@ import { getAsteroids } from "../../../NasaApi.js"
 import createEl from "../../tools.js"
 
 let asteroidsArr = []
-const asteroidSection = createEl("section", "", "asteroidSection")
 const asteroidContainer = createEl("div", "", "asteroidContainer")
 const asteroidImages = {
     img1: "https://images-assets.nasa.gov/image/PIA23876/PIA23876~orig.jpg",
@@ -11,12 +10,13 @@ const asteroidImages = {
 }
 
 export default function createAsteroidSection(){
-    asteroidSection.append(createEl("h2", "Asteroids", "header")) //add this cool img to background: images-assets.nasa.gov/image/GSFC_20171208_Archive_e000720/GSFC_20171208_Archive_e000720~orig.jpg
+    const asteroidSection = createEl("section", "", "asteroidSection")
+    asteroidSection.append(createEl("h2", "Asteroids", "header")) 
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
     getAsteroids().then(asteroids => { //ADD SOME VALIDATION BEFORE !
         asteroidsArr = structuredClone(asteroids.near_earth_objects)
         asteroidSection.firstElementChild.after(createSortMenu(asteroids))
-    
+        
         spawnCards()
     })
     asteroidSection.append(asteroidContainer)
@@ -73,7 +73,7 @@ function createSortMenu(arr){
 
     const asteroidSortContainer = createEl("div", "", "asteroidSortContainer")
     asteroidSortContainer.append(createSortBlock("range", "Diameter"))
-    asteroidSortContainer.append(createSortBlock("range", "Lunar Distance"))
+    asteroidSortContainer.append(createSortBlock("range", "LD"))
     asteroidSortContainer.append(createSortBlock("checkbox", "Hazardous"))
     asteroidSortMenu.append(asteroidSortContainer)
     
@@ -91,18 +91,53 @@ function createSortMenu(arr){
         }else{
             asteroidsArr = structuredClone(arr.near_earth_objects)
         }
+        for (const key in asteroidsArr) {     
+            asteroidsArr[key] = asteroidsArr[key].filter(obj => {
+                return parseInt(obj.estimated_diameter.meters.estimated_diameter_min) >= parseInt(document.querySelector("#Diameter").value)
+            })
+        }
+        for (const key in asteroidsArr) {     
+            asteroidsArr[key] = asteroidsArr[key].filter(obj => {
+                return parseInt(obj.close_approach_data[0].miss_distance.lunar) >= parseInt(document.querySelector("#LD").value)
+            })
+        }
+
         asteroidContainer.innerHTML = ""
         spawnCards()
-
-// function sortByPrice(arr){
-//     arr = arr.filter(el => parseInt(el.prices.slice(0, -1)) >= parseInt(price_input.value))
-//     return arr;
-// }
     })
     asteroidSortMenu.append(confirmButton)
 
     return asteroidSortMenu
-}    
+}  
+
+function findMinAndMaxDiameter(){
+    const new_arr = []
+    for (const key in asteroidsArr) {        
+        const obj = asteroidsArr[key];
+        for (const el of obj) {
+            const temp = parseInt(el.estimated_diameter.meters.estimated_diameter_min)
+            new_arr.push(temp)
+        }
+    }
+    const maxPrice = Math.max(...new_arr);
+    const minPrice = Math.min(...new_arr);
+    
+    return [minPrice, maxPrice]
+}
+function findMinAndMaxLD(){
+    const new_arr = []
+    for (const key in asteroidsArr) {        
+        const obj = asteroidsArr[key];
+        for (const el of obj) {
+            const temp = parseInt(el.close_approach_data[0].miss_distance.lunar)
+            new_arr.push(temp)
+        }
+    }
+    const maxPrice = Math.max(...new_arr);
+    const minPrice = Math.min(...new_arr);
+    
+    return [minPrice, maxPrice]
+}
 
 function createSortBlock(inputType, inputName){
     const sortBlock = createEl("div", "", "sortBlock")
@@ -115,6 +150,25 @@ function createSortBlock(inputType, inputName){
     const tempLabel = createEl("label", inputName, "asteroidLabel")
     tempLabel.for = inputName
     sortBlock.append(tempLabel)
+
+    if(inputName === "Diameter"){
+        const minAndMax = findMinAndMaxDiameter()
+        tempInput.min = minAndMax[0]
+        tempInput.max = minAndMax[1]
+    }
+    if(inputName === "LD"){
+        const minAndMax = findMinAndMaxLD()
+        tempInput.min = minAndMax[0]
+        tempInput.max = minAndMax[1]
+    }
+    if(inputType === "range"){
+        const inputValue = createEl("p", tempInput.value, "accent")
+        tempInput.addEventListener("input", () => {
+            inputValue.textContent = tempInput.value
+        })
+        sortBlock.prepend(inputValue)
+    }
+    
 
     return sortBlock
 }
