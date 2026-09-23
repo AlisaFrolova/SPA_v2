@@ -13,7 +13,7 @@ export default function createAsteroidSection(){
     const asteroidSection = createEl("section", "", "asteroidSection")
     asteroidSection.append(createEl("h2", "Asteroids", "header")) 
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
-    getAsteroids().then(asteroids => { //ADD SOME VALIDATION BEFORE !
+    getAsteroids("2026-09-21", "2026-09-23").then(asteroids => { //ADD SOME VALIDATION BEFORE !
         asteroidsArr = structuredClone(asteroids.near_earth_objects)
         asteroidSection.firstElementChild.after(createSortMenu(asteroids))
         
@@ -91,6 +91,7 @@ function createSortMenu(arr){
         }else{
             asteroidsArr = structuredClone(arr.near_earth_objects)
         }
+        console.log(asteroidsArr)
         for (const key in asteroidsArr) {     
             asteroidsArr[key] = asteroidsArr[key].filter(obj => {
                 return parseInt(obj.estimated_diameter.meters.estimated_diameter_min) >= parseInt(document.querySelector("#Diameter").value)
@@ -110,26 +111,18 @@ function createSortMenu(arr){
     return asteroidSortMenu
 }  
 
-function findMinAndMaxDiameter(){
+function findMinAndMax(type){
     const new_arr = []
     for (const key in asteroidsArr) {        
         const obj = asteroidsArr[key];
         for (const el of obj) {
-            const temp = parseInt(el.estimated_diameter.meters.estimated_diameter_min)
-            new_arr.push(temp)
-        }
-    }
-    const maxPrice = Math.max(...new_arr);
-    const minPrice = Math.min(...new_arr);
-    
-    return [minPrice, maxPrice]
-}
-function findMinAndMaxLD(){
-    const new_arr = []
-    for (const key in asteroidsArr) {        
-        const obj = asteroidsArr[key];
-        for (const el of obj) {
-            const temp = parseInt(el.close_approach_data[0].miss_distance.lunar)
+            let temp
+            if(type === "Diameter"){
+                temp = parseInt(el.estimated_diameter.meters.estimated_diameter_min)
+            }
+            if(type === "LD"){
+                temp = parseInt(el.close_approach_data[0].miss_distance.lunar)
+            }
             new_arr.push(temp)
         }
     }
@@ -151,16 +144,10 @@ function createSortBlock(inputType, inputName){
     tempLabel.for = inputName
     sortBlock.append(tempLabel)
 
-    if(inputName === "Diameter"){
-        const minAndMax = findMinAndMaxDiameter()
-        tempInput.min = minAndMax[0]
-        tempInput.max = minAndMax[1]
-    }
-    if(inputName === "LD"){
-        const minAndMax = findMinAndMaxLD()
-        tempInput.min = minAndMax[0]
-        tempInput.max = minAndMax[1]
-    }
+    const minAndMax = findMinAndMax(inputName)
+    tempInput.min = minAndMax[0]
+    tempInput.max = minAndMax[1]
+    
     if(inputType === "range"){
         const inputValue = createEl("p", tempInput.value, "accent")
         tempInput.addEventListener("input", () => {
@@ -168,7 +155,6 @@ function createSortBlock(inputType, inputName){
         })
         sortBlock.prepend(inputValue)
     }
-    
 
     return sortBlock
 }
