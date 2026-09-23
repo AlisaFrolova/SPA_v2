@@ -1,4 +1,4 @@
-import createEl from "../tools.js"
+import {createEl} from "../tools.js"
 import {getAPOD} from "../../NasaApi.js"
 
 export default function spaceView(){

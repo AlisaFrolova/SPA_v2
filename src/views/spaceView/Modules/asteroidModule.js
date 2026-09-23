@@ -1,5 +1,6 @@
 import { getAsteroids } from "../../../NasaApi.js"
-import createEl from "../../tools.js"
+import {createEl} from "../../tools.js"
+import { getCurrentDay } from "../../tools.js"
 
 let asteroidsArr = []
 const asteroidContainer = createEl("div", "", "asteroidContainer")
@@ -13,7 +14,8 @@ export default function createAsteroidSection(){
     const asteroidSection = createEl("section", "", "asteroidSection")
     asteroidSection.append(createEl("h2", "Asteroids", "header")) 
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
-    getAsteroids("2026-09-21", "2026-09-23").then(asteroids => { //ADD SOME VALIDATION BEFORE !
+    getAsteroids("2026-09-21", getCurrentDay()).then(asteroids => { //ADD SOME VALIDATION BEFORE !
+        console.log(asteroids)
         asteroidsArr = structuredClone(asteroids.near_earth_objects)
         asteroidSection.firstElementChild.after(createSortMenu(asteroids))
         
@@ -91,17 +93,8 @@ function createSortMenu(arr){
         }else{
             asteroidsArr = structuredClone(arr.near_earth_objects)
         }
-        console.log(asteroidsArr)
-        for (const key in asteroidsArr) {     
-            asteroidsArr[key] = asteroidsArr[key].filter(obj => {
-                return parseInt(obj.estimated_diameter.meters.estimated_diameter_min) >= parseInt(document.querySelector("#Diameter").value)
-            })
-        }
-        for (const key in asteroidsArr) {     
-            asteroidsArr[key] = asteroidsArr[key].filter(obj => {
-                return parseInt(obj.close_approach_data[0].miss_distance.lunar) >= parseInt(document.querySelector("#LD").value)
-            })
-        }
+        sortByRange("Diameter")
+        sortByRange("LD")
 
         asteroidContainer.innerHTML = ""
         spawnCards()
@@ -110,6 +103,19 @@ function createSortMenu(arr){
 
     return asteroidSortMenu
 }  
+
+function sortByRange(type){
+    for (const key in asteroidsArr) {     
+        asteroidsArr[key] = asteroidsArr[key].filter(obj => {
+            if(type === "Diameter"){
+                return parseInt(obj.estimated_diameter.meters.estimated_diameter_min) >= parseInt(document.querySelector("#Diameter").value)
+            }
+            if(type === "LD"){
+                return parseInt(obj.close_approach_data[0].miss_distance.lunar) >= parseInt(document.querySelector("#LD").value)
+            }
+        })
+    }
+}
 
 function findMinAndMax(type){
     const new_arr = []

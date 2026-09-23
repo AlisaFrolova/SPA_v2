@@ -1,17 +1,15 @@
-import createEl from "./tools.js"
+import {createEl} from "./tools.js"
 
-export default function authView(){
-    const app = document.querySelector('#app')
-    
-    //section
-    const section = document.createElement("section")
-    app.append(section)
-    
-    section.append(createEl("h1", "Authenthication", "header"))
+const credentials = { username: 'johnd', password: 'm38rmF$' };
 
+export default function signIn(){ //NF
+    if(localStorage.getItem("token") === null){
+        return spawnForm()
+    }
+}
+function spawnForm(){
     //form
     const form = document.createElement("div")
-    section.append(form)
 
     //login
     const loginContainer = document.createElement("div")
@@ -24,9 +22,8 @@ export default function authView(){
     loginInput.id = "loginId"
     loginContainer.append(loginInput)
 
-    const labelLogin = document.createElement("label")
+    const labelLogin = createEl("label", "Login", "textWhite")
     labelLogin.for = "loginId"
-    labelLogin.textContent = "Login"
     loginContainer.append(labelLogin)
 
     //password
@@ -40,44 +37,27 @@ export default function authView(){
     passwordInput.id = "passwordId"
     passwordContainer.append(passwordInput)
 
-    const labelPassword = document.createElement("label")
+    const labelPassword = createEl("label", "Password", "textWhite")
     labelPassword.for = "passwordId"
-    labelPassword.textContent = "password"
     passwordContainer.append(labelPassword)
 
     //button
-    const submitButton = document.createElement("button")
-    submitButton.classList.add("submitButton")
-    submitButton.textContent = "Submit"
+    const submitButton = createEl("button", "Submit", "submitButton")
     form.append(submitButton)
 
     submitButton.addEventListener('click', () => {
-        if(loginInput.value === "1" && passwordInput.value === '2'){
-            window.location.replace("/SPA_test_v1.0/");
+        
+        if(loginInput.value === credentials.username && passwordInput.value === credentials.password){
+            fetch('https://fakestoreapi.com/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
+            }).then(response => response.json()).then(data => localStorage.setItem("token", data.token)).then(() => {window.location.replace("/SPA_v2/")})
         }
-
         event.preventDefault()
         console.log(loginInput.value)
         console.log(passwordInput.value)
     })
 
-    return section
+    return form
 }
-
-
-
-
-
-
-
-// const credentials = { username: 'john_doe', password: 'pass123' };
-    
-   
-      
-    //     /*  fetch('https://fakestoreapi.com/auth/login', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(credentials)
-    //       }).then(response => response.json()).then(data => console.log(data)) */
-
-    //   }

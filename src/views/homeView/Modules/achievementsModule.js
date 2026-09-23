@@ -1,4 +1,4 @@
-import createEl from "../../tools.js"
+import {createEl} from "../../tools.js"
 
 export default function createAchievementsSection(){
     //achievements block

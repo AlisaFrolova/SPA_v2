@@ -256,6 +256,19 @@ blue-10: #2E3A92 */
     font-weight: 800;
 }
 
+/* about */
+.infoSection{
+    width: 100%;
+    min-height: 500px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Auth */
 .submitButton{
     width: 6vw;

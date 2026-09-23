@@ -2,15 +2,15 @@ import homeView from "./views/homeView/homeView.js"
 import spaceView from "./views/spaceView/spaceView.js"
 import newsView from "./views/newsView.js"
 import aboutView from "./views/aboutView.js"
-import authView from "./views/authView.js"
 import createAsteroidSection from "./views/spaceView/Modules/asteroidModule.js"
+import signIn from "./views/authView.js"
 
 const routes = {
     "/": homeView,
     "/space": spaceView,
     "/news": newsView,
     "/about": aboutView,
-    "/auth": authView,
+    "/auth": signIn,
     "/space/asteroids": createAsteroidSection
 };
 
