@@ -221,7 +221,7 @@ blue-10: #2E3A92 */
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 28vw;
+    height: 30vw;
     border: 3px solid #2E3A92;
     background: #0d1117;
     font-size: 1.5rem;
@@ -230,19 +230,23 @@ blue-10: #2E3A92 */
 }
 .asteroidSortContainer{
     width: 100%;
-    height: 12vw;
+    height: 14vw;
     display: flex;
     border: 1px solid #2E3A92;
     gap: 20px;
     align-items: center;
     justify-content: center;
 }
-.sortBlock{
+.sortBlock, .sortContainer{
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.sortContainer{
+    font-size: 1.3rem;
+    gap: 20px;
 }
 .confirmButton{
     cursor: pointer;

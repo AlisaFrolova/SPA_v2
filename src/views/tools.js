@@ -5,15 +5,43 @@ export function createEl(tag, text, className){
     return el
 }
 
-export function getCurrentDay(){ //returns YYYY-MM-DD format
-    let date = Date() //Wed Sep 23 2026 22:09:10 GMT+0300 (Moscow Standard Time)
-    date = new Date(date)
+let date = Date() //Wed Sep 23 2026 22:09:10 GMT+0300 (Moscow Standard Time)
+date = new Date(date)
 
-    let year = date.toString().slice(11, 15) //2026
-    let month = (date.getMonth()+1).toString()//9
-    let day = date.toString().slice(8, 11)//23
-    
-    let newDay = `${year}-0${month}-${day}`
+const currentDay = {
+    year: date.toString().slice(11, 15), //2026
+    month: (date.getMonth()+1).toString(), //9
+    day: date.toString().slice(8, 11)//23
+}
 
-    return newDay
+export const getCurrentDay = () => {
+    if(parseInt(currentDay.month) >= 10){
+        return `${currentDay.year}-${currentDay.month}-${currentDay.day}`
+    }
+    return `${currentDay.year}-0${currentDay.month}-${currentDay.day}`
+}
+
+export function getPreviousDay(){
+    let day = parseInt(currentDay.day)
+    let month = parseInt(currentDay.month)
+    let year = parseInt(currentDay.year)
+
+    for(let i = 0; i < 2; i++){
+        day--
+        if(day < 1){
+            console.log(month, "before")
+            month--
+            console.log(month, "after")
+            day = 30
+            if(month < 1){
+                year--
+                month = 12
+            }
+        }
+    }
+    if(month >= 10){
+        return `${year}-${month}-${day}`
+    }
+
+    return `${year}-0${month}-${day}`
 }
