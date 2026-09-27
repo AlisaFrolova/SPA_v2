@@ -2,11 +2,12 @@ import { getAsteroids } from "../../../NasaApi.js"
 import {createEl} from "../../tools.js"
 import { getCurrentDay } from "../../tools.js"
 import { getPreviousDay } from "../../tools.js"
-
+import { getRandomNumber } from "../../tools.js"
 
 
 //spawn cards
 let asteroidsArr = []
+let tempArr = []
 const asteroidContainer = createEl("div", "", "asteroidContainer")
 const asteroidImages = {
     img1: "https://images-assets.nasa.gov/image/PIA23876/PIA23876~orig.jpg",
@@ -20,9 +21,14 @@ export default function createAsteroidSection(){
     asteroidContainer.style.backgroundImage = `url(https://images-assets.nasa.gov/image/iss074e0472536/iss074e0472536~orig.jpg)`
     getAsteroids(getPreviousDay(), getCurrentDay()).then(asteroids => { //ADD SOME VALIDATION BEFORE !
         asteroidsArr = structuredClone(asteroids.near_earth_objects)
-        asteroidSection.firstElementChild.after(createSortMenu(asteroids))
+        for (const key in asteroidsArr) {
+            tempArr = tempArr.concat(asteroidsArr[key])
+        }
+        asteroidSection.firstElementChild.after(createSortMenu())
         
-        spawnCards()
+        for (const key in asteroidsArr){
+            spawnCards(asteroidsArr[key])
+        }
     })
     asteroidSection.append(asteroidContainer)
 
@@ -56,18 +62,13 @@ function createAsteroidCard(asteroidName, approachDate, diameter, lunarDistance,
     return card
 }
 
-function spawnCards(){
-    let i = 1
-    for (const key in asteroidsArr){
-        const el = asteroidsArr[key]
-        for (const obj of el) {
-            asteroidContainer.append(createAsteroidCard(obj.name,
-            obj.close_approach_data[0].close_approach_date_full,
-                Math.round(obj.estimated_diameter.meters.estimated_diameter_min),
-                   Math.round(obj.close_approach_data[0].miss_distance.lunar),
-                       obj.is_potentially_hazardous_asteroid, asteroidImages[`img${i}`]))
-        }
-        i++
+function spawnCards(arr){
+    for (const el of arr) {
+        asteroidContainer.append(createAsteroidCard(el.name,
+            el.close_approach_data[0].close_approach_date_full,
+                Math.round(el.estimated_diameter.meters.estimated_diameter_min),
+                   Math.round(el.close_approach_data[0].miss_distance.lunar),
+                       el.is_potentially_hazardous_asteroid, asteroidImages[`img${getRandomNumber(1, 4)}`]))
     }
 }
 
@@ -76,9 +77,7 @@ function spawnCards(){
 //sort and filters
 
 
-
-
-function createSortMenu(arr){
+function createSortMenu(){
     const asteroidSortMenu = createEl("div", "", "asteroidSortMenu")
 
     asteroidSortMenu.append(createEl("h2", "Filter & Sort Asteroids", "textWhite"))
@@ -97,41 +96,25 @@ function createSortMenu(arr){
     const hazardousInput = asteroidSortContainer.children[2].firstElementChild
     confirmButton.addEventListener("click", () => {
         if(!hazardousInput.checked){
-            const tempArr = structuredClone(arr.near_earth_objects)
-            for (const key in tempArr){
-                tempArr[key] = tempArr[key].filter(obj => {
-                    return !obj.is_potentially_hazardous_asteroid
-                })
-            }
-            asteroidsArr = structuredClone(tempArr)
-        }else{
-            asteroidsArr = structuredClone(arr.near_earth_objects)
+            tempArr = tempArr.filter(obj => { return !obj.is_potentially_hazardous_asteroid })
         }
-        filterByRange("Diameter")
-        filterByRange("LD")
-
-        bubbleSort()//NF. doesnt work properly because of asteroidsArr structure
-
+        tempArr = filterByRange()
+        
         asteroidContainer.innerHTML = ""
-        spawnCards()
+        spawnCards(tempArr)
+
+        tempArr = []
+        for (const key in asteroidsArr) {
+            tempArr = tempArr.concat(asteroidsArr[key])
+        }
     })
     asteroidSortMenu.append(confirmButton)
 
     return asteroidSortMenu
 }  
 
-function filterByRange(type){
-    for (const key in asteroidsArr) {     
-        asteroidsArr[key] = asteroidsArr[key].filter(obj => {
-            if(type === "Diameter"){
-                return parseInt(obj.estimated_diameter.meters.estimated_diameter_min) >= parseInt(document.querySelector("#Diameter").value)
-            }
-            if(type === "LD"){
-                return parseInt(obj.close_approach_data[0].miss_distance.lunar) >= parseInt(document.querySelector("#LD").value)
-            }
-        })
-    }
-}
+const filterByRange = () => tempArr.filter(obj => { return obj.estimated_diameter.meters.estimated_diameter_min >= parseInt(document.querySelector("#Diameter").value) &&
+        obj.close_approach_data[0].miss_distance.lunar >= parseInt(document.querySelector("#LD").value)})
 
 function findMinAndMax(type){
     const new_arr = []
@@ -189,7 +172,7 @@ function createSortContainer(type){
     sortByIncrease.classList.add(type)
     sortByIncrease.firstElementChild.name = "sortOption"
     sortByIncrease.addEventListener("click", () => {
-        bubbleSort()
+        tempArr = sortByIncreasing(tempArr, type)
     })
     sortContainer.append(sortByIncrease)
 
@@ -197,28 +180,17 @@ function createSortContainer(type){
     sortByDecrease.classList.add(type)
     sortByDecrease.firstElementChild.name = "sortOption"
     sortByDecrease.addEventListener("click", () => {
-        //.reverse()
+        tempArr = sortByIncreasing(tempArr, type).reverse()
     })
     sortContainer.append(sortByDecrease)
 
     return sortContainer
 }
 
-function bubbleSort(){ //NF
-    let swapped
-    for (const key in asteroidsArr) {
-        swapped = false
-        const arr = asteroidsArr[key]
-        for(let i = 0; i < arr.length-1; i++){
-            for (let j = 0; j < arr.length - i - 1; j++) {
-                if (arr[j].estimated_diameter.meters.estimated_diameter_min > arr[j+1].estimated_diameter.meters.estimated_diameter_min) {
-                    [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
-                    swapped = true
-                }
-            }
-        if (!swapped)
-            break
-        }
-        asteroidsArr[key] = arr
+const sortByIncreasing = (tempArr, type) => {
+    if(type === "Distance"){
+        return tempArr.sort((a, b) => a.close_approach_data[0].miss_distance.lunar - b.close_approach_data[0].miss_distance.lunar)
+    }else{
+        return tempArr.sort((a, b) => a.estimated_diameter.meters.estimated_diameter_min - b.estimated_diameter.meters.estimated_diameter_min)
     }
 }

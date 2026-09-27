@@ -45,3 +45,7 @@ export function getPreviousDay(){
 
     return `${year}-0${month}-${day}`
 }
+
+export function getRandomNumber(min, max) {//may be equal to MIN, but always less than MAX
+  return Math.floor(Math.random() * (max - min) + min)
+}
