@@ -26,9 +26,7 @@ export default function createAsteroidSection(){
         }
         asteroidSection.firstElementChild.after(createSortMenu())
         
-        for (const key in asteroidsArr){
-            spawnCards(asteroidsArr[key])
-        }
+        spawnCards(tempArr)
     })
     asteroidSection.append(asteroidContainer)
 
