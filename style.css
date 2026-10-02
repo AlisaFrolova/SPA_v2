@@ -65,9 +65,8 @@ blue-10: #2E3A92 */
     background-repeat: no-repeat;
 }
 .achievements a{
-    color:#2E3A92;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 2rem;
 }
 .infoContainer{
     width: 100%;
@@ -208,11 +207,16 @@ blue-10: #2E3A92 */
     border-radius: 20%;
 }
 .link{
-    font-size: 1.8rem;
+    font-size: 2rem;
     align-self:flex-end;
-    color:#2E3A92;
+    color:#ced0d3;
     position: absolute;
     right: 5%;
+    text-decoration: none;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+.link:hover{
+    color:#2E3A92;
 }
 
 .asteroidSortMenu{
@@ -258,6 +262,75 @@ blue-10: #2E3A92 */
     font-size: 1.7rem;
     padding: 5px;
     font-weight: 800;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+.confirmButton:hover{
+    color: #2E3A92;
+}
+
+/* news */
+.newsSection{
+    width: 100%;
+    height: auto;
+}
+.newsPreviewImg{
+    width: 14vw;
+    height: 12vw;
+}
+.newsPreviewCard{
+    background: #0d1117;
+    color: #ced0d3;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1rem;
+    gap: 30px;
+    padding: 15px;
+    border: 2px solid #2E3A92;
+}
+.previewNewsText  > h2{
+    font-size: 2rem;
+}
+.previewNewsText{
+    color: #ced0d3;
+    width: 70%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.newsPreviewCardsContainer{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.newsSortMenu > h2{
+    color: #E2E8F0;
+    font-size: 2.3rem;
+}
+.newsSortMenu{
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    background: #0d1117;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.inputDateContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 /* about */
@@ -270,7 +343,22 @@ blue-10: #2E3A92 */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 10px;
     align-items: center;
+    border: 3px solid #ced0d3;
+}
+.infoSectionHeader, .infoSectionText{
+    background:rgba(0, 0, 0, 0.4);
+    /* border: 1px solid #ced0d3; */
+    padding: 20px;
+}
+.infoSectionHeader{
+    color: #2E3A92;
+    font-size: 3rem;
+}
+.infoSectionText{
+    color:#ced0d3;
+    font-size: 2rem;
 }
 
 /* Auth */

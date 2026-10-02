@@ -52,7 +52,7 @@ function spawnForm(){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
-            }).then(response => response.json()).then(data => localStorage.setItem("token", data.token)).then(() => {window.location.replace("/SPA_v2/")})
+            }).then(response => response.json()).then(data => localStorage.setItem("token", data.token)).then(() => {window.location.replace("/SPA_v2/")}) //+
         }
         event.preventDefault()
         console.log(loginInput.value)

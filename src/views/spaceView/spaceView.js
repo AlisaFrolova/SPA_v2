@@ -1,5 +1,6 @@
 import {createEl} from "../tools.js"
 import {getAPOD} from "../../NasaApi.js"
+import { getCurrentDay } from "../tools.js"
 
 export default function spaceView(){
     const app = document.querySelector('#app')
@@ -13,8 +14,8 @@ export default function spaceView(){
     //APOD
     const APODSection = createEl("section", "", "APODSection")
 
-    getAPOD("").then(picture => {
-        APODSection.style.backgroundImage = `url(${picture.url})`
+    getAPOD(getCurrentDay()).then(picture => {
+        APODSection.style.backgroundImage = `url(${picture[0].hdurl})`
     })
 
     section.append(APODSection)
